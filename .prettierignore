@@ -1,0 +1,15 @@
+# Supplied project documentation and design handoff are not reformatted.
+*.md
+docs/
+.stitch/
+
+# Generated or third-party files
+package-lock.json
+next-env.d.ts
+.next/
+out/
+build/
+coverage/
+node_modules/
+public/pyodide/
+public/sqljs/
