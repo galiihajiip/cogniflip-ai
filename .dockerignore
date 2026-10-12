@@ -1,0 +1,12 @@
+.git
+node_modules
+.next
+.env
+.env.*
+!.env.example
+public/pyodide
+public/sqljs
+prompt.md
+stitch_cogniflip_ui_ux_design_playbook.zip
+coverage
+*.log
