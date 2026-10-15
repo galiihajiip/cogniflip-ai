@@ -36,8 +36,8 @@
 | **Subtema Inovasi** | **Web Education for Kids** (Spesialisasi Anak Sekolah Dasar Kelas 4 s.d. 6) |
 | **Pengembang / Author** | **Galih Aji Pangestu** |
 | **Institusi / Afiliasi** | **Universitas Pembangunan Nasional "Veteran" Jawa Timur** (UPN "Veteran" Jawa Timur) |
-| **Tautan Repositori GitHub** | Publik (Dapat diakses langsung oleh Dewan Juri) |
-| **Tautan Aplikasi Produksi (Deploy)** | [Kunjungi Live App CogniFlip](https://app-peserta-18.mone-telkomsel.com) *(atau domain aktif pada Dokploy Server)* |
+| **Tautan Repositori GitHub** | [galiihajiip/cogniflip-ai](https://github.com/galiihajiip/cogniflip-ai) |
+| **Tautan Aplikasi Produksi (Deploy)** | [https://peserta18.m1sec.my.id](https://peserta18.m1sec.my.id) |
 | **Akun Akses Cepat Juri (Demo)** | Nama Pengguna: `demo` · Kata Sandi: `FlipBot-Juara-2026` *(Tersedia tombol satu-klik "Isi Otomatis Akun Demo" di halaman masuk)* |
 | **Bahasa Antarmuka (Locale)** | Bahasa Indonesia ramah anak (*child-friendly*, komunikatif, tanpa jargon rumit) |
 
@@ -268,9 +268,9 @@ Untuk mempermudah Dewan Juri M-ONE dalam menguji seluruh fungsionalitas platform
 
 Aplikasi CogniFlip telah dikontainerisasi secara penuh dan siap dijalankan pada peladen produksi Dokploy:
 
-* **Tautan Aplikasi Produksi:** `https://app-peserta-18.mone-telkomsel.com` *(Silakan sesuaikan dengan alamat URL Dokploy yang diberikan panitia)*
-* **Status Health Check:** `https://app-peserta-18.mone-telkomsel.com/api/health`
-* **Status Koneksi Basis Data:** `https://app-peserta-18.mone-telkomsel.com/api/health/database`
+* **Tautan Aplikasi Produksi:** [https://peserta18.m1sec.my.id](https://peserta18.m1sec.my.id)
+* **Status Health Check:** [https://peserta18.m1sec.my.id/api/health](https://peserta18.m1sec.my.id/api/health)
+* **Status Koneksi Basis Data & Integrasi:** [https://peserta18.m1sec.my.id/api/status](https://peserta18.m1sec.my.id/api/status)
 
 ---
 
