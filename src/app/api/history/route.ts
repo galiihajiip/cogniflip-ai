@@ -1,4 +1,4 @@
-import { getServerEnv } from "@/server/config/env";
+import { getServerEnv, isIntegrationConfigured } from "@/server/config/env";
 import { getHistoryService } from "@/server/history";
 import { AppError } from "@/server/http/errors";
 import { parseInput } from "@/server/http/request";

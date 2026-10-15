@@ -9,14 +9,22 @@ export function getProfileService(env: ServerEnv): ProfileService {
     return new ProfileService(getPool());
   }
   return {
-    async getProfile(userId: string) {
+    async getOwn(user: { id: string; handle: string }) {
       return {
-        handle: "demo",
+        handle: user.handle,
         avatarKey: "bot-default",
         leaderboardOptIn: true,
+        preferences: {},
       };
     },
-    async updateProfile() {},
+    async update(user: { id: string; handle: string }, patch: any) {
+      return {
+        handle: user.handle,
+        avatarKey: patch.avatarKey ?? "bot-default",
+        leaderboardOptIn: patch.leaderboardOptIn ?? true,
+        preferences: patch.preferences ?? {},
+      };
+    },
     async deleteAccount() {},
     async exportData() {
       return {

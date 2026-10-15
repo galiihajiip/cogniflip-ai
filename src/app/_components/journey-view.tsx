@@ -58,12 +58,15 @@ export function JourneyView() {
       setStatus("new");
       return;
     }
-    if (!h.ok || !p.ok) {
-      setFailure(!h.ok ? h : (p as ApiFailure));
+    const historyData: History = h.ok
+      ? h.data
+      : { items: [], nextCursor: null, correlationId: "" };
+    if (!p.ok) {
+      setFailure(p as ApiFailure);
       setStatus("error");
       return;
     }
-    setHistory(h.data);
+    setHistory(historyData);
     setProgress(p.data);
     setStatus("ready");
   }, []);
