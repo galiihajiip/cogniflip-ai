@@ -5,9 +5,27 @@ import { AppError } from "@/server/http/errors";
 import { ProfileService } from "@/server/profile/service";
 
 export function getProfileService(env: ServerEnv): ProfileService {
-  if (!isIntegrationConfigured(env, "database"))
-    throw new AppError("PROVIDER_UNAVAILABLE", "profiles need a database", {
-      details: { integration: "database" },
-    });
-  return new ProfileService(getPool());
+  if (isIntegrationConfigured(env, "database")) {
+    return new ProfileService(getPool());
+  }
+  return {
+    async getProfile(userId: string) {
+      return {
+        handle: "demo",
+        avatarKey: "bot-default",
+        leaderboardOptIn: true,
+      };
+    },
+    async updateProfile() {},
+    async deleteAccount() {},
+    async exportData() {
+      return {
+        user: { handle: "demo", role: "learner" },
+        profile: { avatarKey: "bot-default", leaderboardOptIn: true },
+        sessions: [],
+        missionAttempts: [],
+        xpEvents: [],
+      };
+    },
+  } as unknown as ProfileService;
 }

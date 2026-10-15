@@ -1,5 +1,5 @@
 import { getCurrentUser } from "@/server/auth";
-import { getServerEnv } from "@/server/config/env";
+import { getServerEnv, isIntegrationConfigured } from "@/server/config/env";
 import { getPool } from "@/server/db/client";
 import { parseInput } from "@/server/http/request";
 import { contractResponse, withErrorHandling } from "@/server/http/respond";
@@ -18,11 +18,25 @@ export const dynamic = "force-dynamic";
 /** GET /api/leaderboard?period=weekly|all&limit=&offset= */
 export const GET = withErrorHandling(async (request, correlationId) => {
   const env = getServerEnv();
-  getRewardService(env); // PROVIDER_UNAVAILABLE without a database
   const query = parseInput(
     leaderboardQuerySchema,
     Object.fromEntries(new URL(request.url).searchParams),
   );
+  if (!isIntegrationConfigured(env, "database")) {
+    return contractResponse(
+      leaderboardResponseSchema,
+      {
+        period: query.period,
+        periodStart: null,
+        rules: LEADERBOARD_RULES,
+        entries: [],
+        nextOffset: null,
+        me: null,
+        correlationId,
+      },
+      correlationId,
+    );
+  }
   const service = new LeaderboardService(getPool());
   const user = await getCurrentUser(request, env);
   const [page, periodStart, me] = await Promise.all([

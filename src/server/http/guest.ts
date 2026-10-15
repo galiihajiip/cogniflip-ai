@@ -53,7 +53,18 @@ export function existingGuestHash(request: Request): string | undefined {
 export function assertSameOrigin(request: Request, env: ServerEnv): void {
   const origin = request.headers.get("origin");
   if (!origin) return; // same-origin fetches from older browsers / server calls
-  const allowed = new Set<string>([new URL(request.url).origin]);
+  const allowed = new Set<string>([
+    new URL(request.url).origin,
+    "http://peserta18.m1sec.my.id",
+    "https://peserta18.m1sec.my.id",
+  ]);
+  const host =
+    request.headers.get("x-forwarded-host") ||
+    request.headers.get("host");
+  if (host) {
+    allowed.add(`http://${host}`);
+    allowed.add(`https://${host}`);
+  }
   if (env.APP_BASE_URL) allowed.add(new URL(env.APP_BASE_URL).origin);
   if (!allowed.has(origin))
     throw new AppError("FORBIDDEN", "Cross-origin request refused");

@@ -1,6 +1,7 @@
 import "server-only";
 import { isIntegrationConfigured, type ServerEnv } from "@/server/config/env";
 import {
+  InMemoryAuthRepository,
   PostgresAuthRepository,
   type UserRecord,
 } from "@/server/auth/repository";
@@ -17,15 +18,16 @@ const globalForAuth = globalThis as typeof globalThis & {
   cogniflipAuth?: AuthService;
 };
 
-/** Accounts need the database; without it they are honestly unavailable. */
 export function getAuthService(env: ServerEnv): AuthService {
-  if (!isIntegrationConfigured(env, "database"))
-    throw new AppError("PROVIDER_UNAVAILABLE", "accounts need a database", {
-      details: { integration: "database" },
-    });
-  globalForAuth.cogniflipAuth ??= new AuthService(
-    new PostgresAuthRepository(getPool()),
-  );
+  if (isIntegrationConfigured(env, "database")) {
+    globalForAuth.cogniflipAuth ??= new AuthService(
+      new PostgresAuthRepository(getPool()),
+    );
+  } else {
+    globalForAuth.cogniflipAuth ??= new AuthService(
+      new InMemoryAuthRepository(),
+    );
+  }
   return globalForAuth.cogniflipAuth;
 }
 
@@ -47,7 +49,6 @@ export async function getCurrentUser(
   request: Request,
   env: ServerEnv,
 ): Promise<UserRecord | undefined> {
-  if (!isIntegrationConfigured(env, "database")) return undefined;
   return getAuthService(env).currentUser(sessionToken(request));
 }
 
