@@ -12,7 +12,7 @@ import {
 } from "@/server/auth/service";
 import { getPool } from "@/server/db/client";
 import { AppError } from "@/server/http/errors";
-import { readCookie } from "@/server/http/guest";
+import { isHttpsRequest, readCookie } from "@/server/http/guest";
 
 const globalForAuth = globalThis as typeof globalThis & {
   cogniflipAuth?: AuthService;
@@ -34,13 +34,30 @@ export function getAuthService(env: ServerEnv): AuthService {
 export const sessionToken = (request: Request) =>
   readCookie(request, SESSION_COOKIE);
 
-export function sessionCookie(token: string, env: ServerEnv): string {
-  const secure = env.NODE_ENV === "production" ? "; Secure" : "";
+export function sessionCookie(
+  token: string,
+  env: ServerEnv,
+  request?: Request,
+): string {
+  const secure =
+    request && !isHttpsRequest(request, env)
+      ? ""
+      : env.NODE_ENV === "production"
+        ? "; Secure"
+        : "";
   return `${SESSION_COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${SESSION_TTL_MS / 1000}${secure}`;
 }
 
-export function clearSessionCookie(env: ServerEnv): string {
-  const secure = env.NODE_ENV === "production" ? "; Secure" : "";
+export function clearSessionCookie(
+  env: ServerEnv,
+  request?: Request,
+): string {
+  const secure =
+    request && !isHttpsRequest(request, env)
+      ? ""
+      : env.NODE_ENV === "production"
+        ? "; Secure"
+        : "";
   return `${SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${secure}`;
 }
 

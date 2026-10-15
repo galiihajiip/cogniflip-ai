@@ -24,6 +24,14 @@ export function readCookie(request: Request, name: string): string | undefined {
   return undefined;
 }
 
+export function isHttpsRequest(request: Request, env: ServerEnv): boolean {
+  if (env.NODE_ENV !== "production") return false;
+  const proto =
+    request.headers.get("x-forwarded-proto") ||
+    new URL(request.url).protocol.replace(":", "");
+  return proto === "https";
+}
+
 /** Returns the guest's key hash, creating a new key (and cookie) if needed. */
 export function guestIdentity(
   request: Request,
@@ -33,7 +41,7 @@ export function guestIdentity(
   if (existing && KEY_PATTERN.test(existing))
     return { keyHash: hashKey(existing) };
   const key = randomBytes(32).toString("base64url");
-  const secure = env.NODE_ENV === "production" ? "; Secure" : "";
+  const secure = isHttpsRequest(request, env) ? "; Secure" : "";
   return {
     keyHash: hashKey(key),
     setCookie: `${GUEST_COOKIE}=${key}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${MAX_AGE_SECONDS}${secure}`,

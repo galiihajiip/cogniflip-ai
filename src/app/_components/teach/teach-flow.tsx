@@ -106,11 +106,18 @@ export function TeachFlow({ lesson }: { lesson: LessonInfo }) {
       }
       if (result.code === "CONFLICT") {
         await refresh(current.sessionId);
+      } else if (result.status === 404) {
+        // Session expired or lost on server restart; create a fresh one cleanly
+        preparing.current = null;
+        router.replace(pathname, { scroll: false });
+        started.current = false;
+        void load();
+        return null;
       }
       setActionError(result);
       return null;
     },
-    [],
+    [load, pathname, router],
   );
 
   async function refresh(id: string) {
