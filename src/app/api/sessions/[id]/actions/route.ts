@@ -44,7 +44,7 @@ export const POST = withErrorHandling<Ctx>(
       action.type === "submit"
         ? await engine.submit(id, {
             ...action,
-            rateLimitKey: await requesterRateKey(request, env, owner!),
+            rateLimitKey: await requesterRateKey(request, env, owner ?? id),
           })
         : action.type === "view_concept"
           ? await engine.viewConcept(id, action.expectedVersion)
