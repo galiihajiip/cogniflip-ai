@@ -247,8 +247,8 @@ export function ClarifyScreen({
                 }
               >
                 <p className="mb-2 flex items-center gap-2 text-primary">
-                  <Icon name="auto_awesome" size={18} />
-                  Aku mulai mengerti, tapi masih ada yang belum kupahami:
+                  <Icon name="help" size={18} />
+                  FlipBot belum bisa menangkap penjelasanmu dengan jelas:
                 </p>
                 <p className="rounded-xl bg-surface-container-lowest p-4 text-headline-sm text-on-surface">
                   “{question}”
